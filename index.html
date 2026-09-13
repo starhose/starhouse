@@ -1,0 +1,2287 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="theme-color" content="#05010d" />
+<meta name="description" content="STAR HOUSE — официальный сайт проекта." />
+<meta name="author" content="STAR HOUSE" />
+<title>STAR HOUSE — Официальный сайт</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%E2%98%85%3C/text%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+/* ============================================================
+   1. RESET
+   ============================================================ */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+img, svg, video { display: block; max-width: 100%; }
+button, input, textarea, select { font: inherit; color: inherit; background: none; border: none; outline: none; }
+button { cursor: pointer; }
+a { color: inherit; text-decoration: none; }
+ul, ol { list-style: none; }
+
+/* ============================================================
+   2. ROOT
+   ============================================================ */
+:root {
+  --bg: #05010d;
+  --bg-2: #0b0118;
+  --bg-3: #120225;
+  --neon: #b026ff;
+  --neon-2: #ff2fd0;
+  --accent: #00e5ff;
+  --accent-2: #00ffa3;
+  --text: #f0e9ff;
+  --text-2: #cdbfe6;
+  --muted: #8a7ba8;
+  --line: rgba(176, 38, 255, 0.25);
+  --line-2: rgba(176, 38, 255, 0.12);
+  --glass: rgba(176, 38, 255, 0.06);
+  --glass-2: rgba(0, 229, 255, 0.04);
+  --danger: #ff3860;
+  --radius: 20px;
+  --radius-lg: 28px;
+  --nav-h: 80px;
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --section-pad: 160px;
+  --gap: 40px;
+}
+
+/* ============================================================
+   3. BASE
+   ============================================================ */
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+  line-height: 1.7;
+  min-height: 100vh;
+  position: relative;
+  font-size: 16px;
+  letter-spacing: 0.2px;
+}
+body.locked { overflow: hidden; }
+::selection { background: var(--neon); color: #fff; }
+::-webkit-scrollbar { width: 12px; }
+::-webkit-scrollbar-track { background: var(--bg-2); }
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(var(--neon), var(--neon-2));
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(var(--neon-2), var(--accent));
+}
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ============================================================
+   4. PRELOADER
+   ============================================================ */
+#preloader {
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 32px;
+  transition: opacity 0.8s ease, visibility 0.8s ease;
+}
+#preloader.hidden { opacity: 0; visibility: hidden; }
+.loader-logo {
+  font-family: 'Orbitron', sans-serif;
+  font-size: clamp(32px, 7vw, 64px);
+  font-weight: 900;
+  letter-spacing: 10px;
+  color: #fff;
+  text-shadow: 0 0 20px var(--neon), 0 0 40px var(--neon-2);
+  animation: pulse 1.5s ease-in-out infinite;
+}
+.loader-bar {
+  width: 260px;
+  height: 3px;
+  background: rgba(176, 38, 255, 0.2);
+  border-radius: 3px;
+  overflow: hidden;
+  position: relative;
+}
+.loader-bar::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 40%;
+  background: linear-gradient(90deg, var(--neon), var(--neon-2));
+  animation: load 1.2s ease-in-out infinite;
+}
+@keyframes load { 0% { left: -40%; } 100% { left: 100%; } }
+@keyframes pulse {
+  0%, 100% { opacity: 0.85; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.04); }
+}
+
+/* ============================================================
+   5. NAV
+   ============================================================ */
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--nav-h);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 60px;
+  background: rgba(5, 1, 13, 0.75);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border-bottom: 1px solid var(--line);
+  z-index: 1000;
+  transition: transform 0.4s var(--ease);
+}
+.nav.hidden { transform: translateY(-100%); }
+.nav-logo {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 900;
+  font-size: 24px;
+  letter-spacing: 4px;
+  cursor: pointer;
+  user-select: none;
+  transition: transform 0.3s var(--ease);
+}
+.nav-logo:hover { transform: scale(1.04); }
+.nav-logo .star { color: #fff; }
+.nav-logo .house {
+  color: var(--neon);
+  text-shadow: 0 0 14px var(--neon);
+}
+.nav-links { display: flex; gap: 42px; }
+.nav-links button {
+  font-size: 13px;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--text);
+  position: relative;
+  transition: color 0.3s ease;
+  background: none;
+  cursor: pointer;
+  font-family: inherit;
+  padding: 8px 0;
+}
+.nav-links button::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--neon), var(--neon-2));
+  transition: width 0.3s var(--ease);
+}
+.nav-links button:hover { color: var(--neon); }
+.nav-links button:hover::after { width: 100%; }
+.burger {
+  display: none;
+  flex-direction: column;
+  gap: 6px;
+  cursor: pointer;
+  padding: 8px;
+}
+.burger span {
+  width: 28px;
+  height: 2px;
+  background: var(--neon);
+  border-radius: 2px;
+  transition: 0.3s var(--ease);
+}
+.burger.active span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+.burger.active span:nth-child(2) { opacity: 0; }
+.burger.active span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
+/* ============================================================
+   6. HERO
+   ============================================================ */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  overflow: hidden;
+  padding: calc(var(--nav-h) + 80px) 40px 120px;
+}
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(circle at 20% 30%, rgba(176, 38, 255, 0.4), transparent 55%),
+    radial-gradient(circle at 80% 70%, rgba(255, 47, 208, 0.35), transparent 55%),
+    radial-gradient(circle at 50% 50%, rgba(0, 229, 255, 0.15), transparent 65%);
+  animation: bgPulse 12s ease-in-out infinite;
+}
+@keyframes bgPulse {
+  0%, 100% { transform: scale(1); opacity: 0.9; }
+  50% { transform: scale(1.12); opacity: 1; }
+}
+.hero-grid {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background-image:
+    linear-gradient(rgba(176, 38, 255, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(176, 38, 255, 0.08) 1px, transparent 1px);
+  background-size: 80px 80px;
+  mask-image: radial-gradient(circle at center, #000 25%, transparent 80%);
+  -webkit-mask-image: radial-gradient(circle at center, #000 25%, transparent 80%);
+  animation: gridMove 24s linear infinite;
+}
+@keyframes gridMove {
+  from { background-position: 0 0; }
+  to { background-position: 80px 80px; }
+}
+.hero-content {
+  position: relative;
+  z-index: 3;
+  max-width: 1200px;
+}
+.glitch {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 900;
+  font-size: clamp(48px, 12vw, 170px);
+  letter-spacing: 8px;
+  color: #fff;
+  position: relative;
+  display: inline-block;
+  text-shadow:
+    0 0 20px var(--neon),
+    0 0 40px var(--neon),
+    0 0 80px var(--neon-2);
+  animation: glow 3s ease-in-out infinite alternate;
+}
+@keyframes glow {
+  from { text-shadow: 0 0 20px var(--neon), 0 0 40px var(--neon); }
+  to { text-shadow: 0 0 30px var(--neon-2), 0 0 60px var(--neon-2), 0 0 100px var(--accent); }
+}
+.glitch::before, .glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+  pointer-events: none;
+}
+.glitch::before {
+  color: var(--accent);
+  animation: glitchTop 3s infinite linear alternate-reverse;
+  clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
+}
+.glitch::after {
+  color: var(--neon-2);
+  animation: glitchBot 2.5s infinite linear alternate-reverse;
+  clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%);
+}
+@keyframes glitchTop {
+  0%, 88%, 100% { transform: translate(0); }
+  90% { transform: translate(-5px, -2px); }
+  92% { transform: translate(5px, 2px); }
+  94% { transform: translate(-2px, 1px); }
+}
+@keyframes glitchBot {
+  0%, 84%, 100% { transform: translate(0); }
+  86% { transform: translate(4px, 2px); }
+  88% { transform: translate(-4px, -2px); }
+  90% { transform: translate(2px, 2px); }
+}
+.hero-welcome {
+  margin-top: 50px;
+  font-size: clamp(17px, 1.9vw, 22px);
+  color: var(--text-2);
+  line-height: 2;
+  max-width: 850px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.hero-welcome strong {
+  color: var(--neon);
+  text-shadow: 0 0 14px var(--neon);
+}
+.hero-signature {
+  margin-top: 40px;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 13px;
+  letter-spacing: 6px;
+  color: var(--accent);
+  text-transform: uppercase;
+}
+.hero-buttons {
+  margin-top: 70px;
+  display: flex;
+  gap: 24px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.hero-btn {
+  padding: 20px 46px;
+  border-radius: 60px;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 13px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.3s var(--ease);
+  border: 2px solid transparent;
+}
+.hero-btn.primary {
+  background: linear-gradient(90deg, var(--neon), var(--neon-2));
+  color: #fff;
+  box-shadow: 0 0 30px rgba(176, 38, 255, 0.5);
+}
+.hero-btn.primary:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 0 55px rgba(255, 47, 208, 0.9);
+}
+.hero-btn.ghost {
+  border-color: var(--neon);
+  color: var(--neon);
+  background: transparent;
+}
+.hero-btn.ghost:hover {
+  background: var(--neon);
+  color: #fff;
+  box-shadow: 0 0 45px var(--neon);
+  transform: translateY(-4px);
+}
+
+/* ============================================================
+   7. MARQUEE
+   ============================================================ */
+.marquee {
+  overflow: hidden;
+  background: linear-gradient(90deg, var(--neon), var(--neon-2), var(--neon));
+  background-size: 200% 100%;
+  padding: 20px 0;
+  white-space: nowrap;
+  animation: shift 6s linear infinite;
+}
+@keyframes shift {
+  from { background-position: 0% 0; }
+  to { background-position: 200% 0; }
+}
+.marquee-track {
+  display: inline-block;
+  animation: scroll 34s linear infinite;
+}
+.marquee-track span {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: 6px;
+  color: #fff;
+  padding: 0 32px;
+}
+@keyframes scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+/* ============================================================
+   8. SECTIONS
+   ============================================================ */
+.section {
+  padding: var(--section-pad) 60px;
+  max-width: 1400px;
+  margin: 0 auto;
+  position: relative;
+}
+.section-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: clamp(36px, 5.5vw, 68px);
+  letter-spacing: 6px;
+  text-align: center;
+  margin-bottom: 28px;
+  background: linear-gradient(90deg, var(--neon), var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.section-sub {
+  text-align: center;
+  color: var(--muted);
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  font-size: 13px;
+  margin-bottom: 100px;
+}
+.reveal {
+  opacity: 0;
+  transform: translateY(50px);
+  transition: opacity 1s ease, transform 1s ease;
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* ============================================================
+   9. POSTS GRID
+   ============================================================ */
+.posts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+  gap: 44px;
+}
+.post-card {
+  background: linear-gradient(160deg, rgba(176, 38, 255, 0.08), rgba(0, 229, 255, 0.03));
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+  transition: all 0.4s var(--ease);
+  display: flex;
+  flex-direction: column;
+}
+.post-card:hover {
+  transform: translateY(-10px);
+  border-color: var(--neon-2);
+  box-shadow: 0 30px 60px rgba(255, 47, 208, 0.25);
+}
+.post-media {
+  width: 100%;
+  aspect-ratio: 16/9;
+  background: #0b0118;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.post-media img,
+.post-media video,
+.post-media iframe {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.post-media-placeholder {
+  font-family: 'Orbitron', sans-serif;
+  color: var(--muted);
+  font-size: 14px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+}
+.post-body {
+  padding: 40px 44px 46px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.post-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 26px;
+  letter-spacing: 2px;
+  margin-bottom: 22px;
+  line-height: 1.35;
+  color: #fff;
+}
+.post-text {
+  color: var(--text-2);
+  font-size: 16px;
+  line-height: 1.9;
+  flex: 1;
+}
+.post-tag {
+  display: inline-block;
+  margin-top: 26px;
+  padding: 9px 20px;
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  border: 1px solid var(--line);
+  border-radius: 50px;
+  color: var(--neon);
+  align-self: flex-start;
+}
+.no-posts {
+  text-align: center;
+  color: var(--muted);
+  grid-column: 1/-1;
+  padding: 120px 40px;
+  font-size: 17px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  border: 1px dashed var(--line);
+  border-radius: var(--radius);
+  line-height: 2.2;
+}
+.no-posts small {
+  display: block;
+  margin-top: 16px;
+  font-size: 14px;
+  letter-spacing: 2px;
+  text-transform: none;
+  color: var(--muted);
+  opacity: 0.8;
+}
+
+/* ============================================================
+   10. SUBSCRIBE
+   ============================================================ */
+.subscribe-box {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 90px 60px;
+  background: linear-gradient(160deg, rgba(176, 38, 255, 0.08), rgba(0, 229, 255, 0.03));
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.subscribe-box::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255, 47, 208, 0.12), transparent 60%);
+  animation: rotate 24s linear infinite;
+  pointer-events: none;
+}
+@keyframes rotate {
+  from { transform: rotate(0); }
+  to { transform: rotate(360deg); }
+}
+.subscribe-box > * { position: relative; z-index: 2; }
+.subscribe-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: clamp(26px, 3.5vw, 42px);
+  letter-spacing: 4px;
+  color: #fff;
+  margin-bottom: 24px;
+  text-shadow: 0 0 24px var(--neon);
+}
+.subscribe-text {
+  color: var(--text-2);
+  font-size: clamp(16px, 1.7vw, 19px);
+  line-height: 2;
+  margin-bottom: 60px;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.socials {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  justify-content: center;
+}
+.social {
+  padding: 22px 54px;
+  border: 2px solid var(--line);
+  border-radius: 60px;
+  font-size: 14px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  font-weight: 600;
+  transition: all 0.3s var(--ease);
+  background: var(--glass);
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  cursor: pointer;
+}
+.social::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, var(--neon), var(--neon-2));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: -1;
+}
+.social:hover {
+  border-color: transparent;
+  color: #fff;
+  box-shadow: 0 0 45px rgba(255, 47, 208, 0.6);
+  transform: translateY(-6px);
+}
+.social:hover::before { opacity: 1; }
+.social.tiktok::before {
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+}
+.social.tiktok:hover {
+  box-shadow: 0 0 45px rgba(0, 229, 255, 0.6);
+}
+
+/* ============================================================
+   11. FOOTER
+   ============================================================ */
+.footer {
+  padding: 60px 20px;
+  text-align: center;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 13px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+
+/* ============================================================
+   12. TO TOP
+   ============================================================ */
+.to-top {
+  position: fixed;
+  right: 30px;
+  bottom: 30px;
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--neon), var(--neon-2));
+  color: #fff;
+  font-size: 24px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: 0.3s var(--ease);
+  z-index: 999;
+  box-shadow: 0 0 30px rgba(176, 38, 255, 0.6);
+}
+.to-top.show { opacity: 1; visibility: visible; }
+.to-top:hover { transform: translateY(-5px) scale(1.1); }
+
+/* ============================================================
+   13. LOGIN
+   ============================================================ */
+#adminLogin {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background:
+    radial-gradient(circle at 20% 30%, rgba(176, 38, 255, 0.3), transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(255, 47, 208, 0.25), transparent 50%),
+    var(--bg);
+  z-index: 5000;
+  padding: 30px;
+}
+#adminLogin.active { display: flex; }
+.login-box {
+  width: 100%;
+  max-width: 520px;
+  padding: 60px 48px;
+  background: rgba(11, 1, 24, 0.92);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  backdrop-filter: blur(24px);
+  box-shadow: 0 30px 80px rgba(176, 38, 255, 0.35);
+  text-align: center;
+}
+.login-logo {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 30px;
+  font-weight: 900;
+  letter-spacing: 5px;
+  margin-bottom: 12px;
+}
+.login-logo .star { color: #fff; }
+.login-logo .house {
+  color: var(--neon);
+  text-shadow: 0 0 14px var(--neon);
+}
+.login-sub {
+  font-size: 13px;
+  letter-spacing: 4px;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin-bottom: 40px;
+}
+.account-tabs {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 32px;
+}
+.account-tab {
+  flex: 1;
+  padding: 18px 10px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--glass);
+  color: var(--muted);
+  font-size: 12px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  font-weight: 600;
+  transition: 0.3s var(--ease);
+  cursor: pointer;
+}
+.account-tab:hover { color: var(--neon); border-color: var(--neon); }
+.account-tab.active {
+  background: linear-gradient(90deg, var(--neon), var(--neon-2));
+  border-color: transparent;
+  color: #fff;
+  box-shadow: 0 0 30px rgba(176, 38, 255, 0.5);
+}
+.login-input {
+  width: 100%;
+  padding: 20px 24px;
+  background: rgba(176, 38, 255, 0.08);
+  border: 1px solid var(--line);
+  border-radius: 60px;
+  color: var(--text);
+  font-size: 16px;
+  text-align: center;
+  margin-bottom: 22px;
+  transition: 0.3s var(--ease);
+}
+.login-input:focus {
+  border-color: var(--neon);
+  box-shadow: 0 0 30px rgba(176, 38, 255, 0.4);
+}
+.login-btn {
+  width: 100%;
+  padding: 20px;
+  background: linear-gradient(90deg, var(--neon), var(--neon-2));
+  color: #fff;
+  border-radius: 60px;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  transition: 0.3s var(--ease);
+  box-shadow: 0 0 30px rgba(176, 38, 255, 0.5);
+  cursor: pointer;
+}
+.login-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 50px rgba(255, 47, 208, 0.85);
+}
+.login-error {
+  color: var(--danger);
+  font-size: 14px;
+  letter-spacing: 1px;
+  margin-top: 16px;
+  min-height: 22px;
+}
+.login-back {
+  display: inline-block;
+  margin-top: 32px;
+  font-size: 13px;
+  letter-spacing: 3px;
+  color: var(--muted);
+  text-transform: uppercase;
+  transition: 0.3s;
+  cursor: pointer;
+  background: none;
+}
+.login-back:hover { color: var(--neon); }
+
+/* ============================================================
+   14. ADMIN DASHBOARD
+   ============================================================ */
+#adminPanel {
+  position: fixed;
+  inset: 0;
+  display: none;
+  flex-direction: column;
+  background: var(--bg);
+  z-index: 5000;
+  overflow-y: auto;
+}
+#adminPanel.active { display: flex; }
+.admin-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 60px;
+  background: rgba(5, 1, 13, 0.95);
+  border-bottom: 1px solid var(--line);
+  backdrop-filter: blur(18px);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+.admin-logo {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 22px;
+  font-weight: 900;
+  letter-spacing: 4px;
+}
+.admin-logo .star { color: #fff; }
+.admin-logo .house {
+  color: var(--neon);
+  text-shadow: 0 0 12px var(--neon);
+}
+.admin-user {
+  font-size: 13px;
+  letter-spacing: 2px;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+.admin-user strong { color: var(--accent); }
+.admin-nav-actions {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+.admin-btn {
+  padding: 14px 28px;
+  border-radius: 60px;
+  font-size: 13px;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  font-weight: 600;
+  border: 1px solid var(--line);
+  color: var(--text);
+  background: var(--glass);
+  transition: 0.3s var(--ease);
+  cursor: pointer;
+}
+.admin-btn:hover {
+  border-color: var(--neon);
+  color: var(--neon);
+  box-shadow: 0 0 24px rgba(176, 38, 255, 0.4);
+}
+.admin-btn.primary {
+  background: linear-gradient(90deg, var(--neon), var(--neon-2));
+  border-color: transparent;
+  color: #fff;
+  box-shadow: 0 0 24px rgba(176, 38, 255, 0.5);
+}
+.admin-btn.primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 40px rgba(255, 47, 208, 0.85);
+}
+.admin-btn.danger {
+  border-color: rgba(255, 56, 96, 0.4);
+  color: var(--danger);
+}
+.admin-btn.danger:hover {
+  border-color: var(--danger);
+  box-shadow: 0 0 24px rgba(255, 56, 96, 0.4);
+}
+.admin-main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 60px 40px 120px;
+  width: 100%;
+}
+.admin-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 40px;
+  letter-spacing: 5px;
+  margin-bottom: 12px;
+  background: linear-gradient(90deg, var(--neon), var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.admin-sub {
+  color: var(--muted);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  font-size: 13px;
+  margin-bottom: 46px;
+}
+.admin-card {
+  padding: 40px;
+  background: linear-gradient(160deg, rgba(176, 38, 255, 0.07), rgba(0, 229, 255, 0.03));
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  margin-bottom: 32px;
+}
+.admin-card h3 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 18px;
+  letter-spacing: 3px;
+  margin-bottom: 26px;
+  color: var(--accent);
+}
+.admin-field { margin-bottom: 24px; }
+.admin-field label {
+  display: block;
+  font-size: 12px;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+.admin-field input[type="text"],
+.admin-field input[type="password"],
+.admin-field input[type="url"],
+.admin-field textarea,
+.admin-field select {
+  width: 100%;
+  padding: 18px 22px;
+  background: rgba(5, 1, 13, 0.6);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  color: var(--text);
+  font-size: 15px;
+  transition: 0.3s var(--ease);
+  font-family: inherit;
+}
+.admin-field input:focus,
+.admin-field textarea:focus,
+.admin-field select:focus {
+  border-color: var(--neon);
+  box-shadow: 0 0 24px rgba(176, 38, 255, 0.3);
+}
+.admin-field textarea { min-height: 140px; resize: vertical; }
+.admin-field select { cursor: pointer; }
+.admin-field select option { background: var(--bg-2); }
+.position-picker {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+.pos-option {
+  padding: 20px 14px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: rgba(5, 1, 13, 0.4);
+  color: var(--muted);
+  font-size: 12px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  font-weight: 600;
+  text-align: center;
+  transition: 0.3s var(--ease);
+  cursor: pointer;
+}
+.pos-option:hover { border-color: var(--neon); color: var(--neon); }
+.pos-option.active {
+  background: linear-gradient(135deg, rgba(176, 38, 255, 0.3), rgba(255, 47, 208, 0.2));
+  border-color: var(--neon);
+  color: #fff;
+  box-shadow: 0 0 24px rgba(176, 38, 255, 0.4);
+}
+.file-input-wrap { position: relative; display: block; }
+.file-input-wrap input[type="file"] {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+.file-input-display {
+  padding: 18px 22px;
+  background: rgba(5, 1, 13, 0.6);
+  border: 1px dashed var(--line);
+  border-radius: 14px;
+  color: var(--muted);
+  font-size: 14px;
+  text-align: center;
+  transition: 0.3s var(--ease);
+  cursor: pointer;
+}
+.file-input-wrap:hover .file-input-display {
+  border-color: var(--neon);
+  color: var(--neon);
+}
+.file-input-wrap.has-file .file-input-display {
+  border-style: solid;
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.media-preview {
+  margin-top: 16px;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  max-height: 340px;
+}
+.media-preview img,
+.media-preview video {
+  width: 100%;
+  max-height: 340px;
+  object-fit: contain;
+  background: #000;
+}
+.admin-list { margin-top: 30px; }
+.admin-item {
+  padding: 26px;
+  background: rgba(176, 38, 255, 0.05);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  margin-bottom: 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+  transition: 0.3s var(--ease);
+}
+.admin-item:hover {
+  border-color: var(--neon);
+  box-shadow: 0 0 24px rgba(176, 38, 255, 0.2);
+}
+.admin-item-info { flex: 1; }
+.admin-item-header {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.admin-item-position {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 11px;
+  letter-spacing: 2px;
+  padding: 5px 14px;
+  border-radius: 50px;
+  background: rgba(0, 229, 255, 0.15);
+  color: var(--accent);
+  text-transform: uppercase;
+}
+.admin-item-type {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 11px;
+  letter-spacing: 2px;
+  padding: 5px 14px;
+  border-radius: 50px;
+  background: rgba(176, 38, 255, 0.15);
+  color: var(--neon);
+  text-transform: uppercase;
+}
+.admin-item-info h4 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 17px;
+  letter-spacing: 1.5px;
+  margin: 10px 0;
+}
+.admin-item-info p {
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+.admin-item-actions {
+  display: flex;
+  gap: 10px;
+  flex-shrink: 0;
+}
+.admin-item-actions button {
+  padding: 11px 18px;
+  border-radius: 10px;
+  font-size: 12px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  border: 1px solid var(--line);
+  color: var(--text);
+  transition: 0.3s var(--ease);
+  cursor: pointer;
+}
+.admin-item-actions button:hover {
+  border-color: var(--neon);
+  color: var(--neon);
+}
+.admin-item-actions button.del:hover {
+  border-color: var(--danger);
+  color: var(--danger);
+}
+.admin-toast {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%) translateY(120px);
+  padding: 18px 36px;
+  background: linear-gradient(90deg, var(--neon), var(--neon-2));
+  color: #fff;
+  border-radius: 60px;
+  font-size: 14px;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  font-weight: 600;
+  opacity: 0;
+  transition: 0.4s var(--ease);
+  z-index: 6000;
+  box-shadow: 0 0 35px rgba(176, 38, 255, 0.6);
+  pointer-events: none;
+}
+.admin-toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+.admin-toast.error { background: linear-gradient(90deg, var(--danger), #ff6b8a); }
+.admin-tabs {
+  display: flex;
+  gap: 14px;
+  margin-bottom: 36px;
+  flex-wrap: wrap;
+}
+.admin-tab {
+  padding: 16px 32px;
+  border-radius: 60px;
+  border: 1px solid var(--line);
+  background: var(--glass);
+  color: var(--muted);
+  font-size: 13px;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  font-weight: 600;
+  transition: 0.3s var(--ease);
+  cursor: pointer;
+}
+.admin-tab:hover { color: var(--neon); border-color: var(--neon); }
+.admin-tab.active {
+  background: linear-gradient(90deg, var(--neon), var(--neon-2));
+  border-color: transparent;
+  color: #fff;
+  box-shadow: 0 0 24px rgba(176, 38, 255, 0.5);
+}
+.admin-tab-content { display: none; }
+.admin-tab-content.active { display: block; }
+
+/* ============================================================
+   15. MODAL
+   ============================================================ */
+.modal {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(5, 1, 13, 0.88);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  z-index: 3000;
+  padding: 30px;
+  opacity: 0;
+  transition: opacity 0.4s var(--ease);
+  overflow-y: auto;
+}
+.modal.active { display: flex; opacity: 1; }
+.modal-content {
+  width: 100%;
+  max-width: 1100px;
+  max-height: 92vh;
+  overflow-y: auto;
+  padding: 70px 60px;
+  background: linear-gradient(160deg, #0b0118, #120225);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  position: relative;
+  transform: scale(0.92) translateY(30px);
+  transition: transform 0.4s var(--ease);
+  box-shadow: 0 40px 100px rgba(176, 38, 255, 0.4);
+}
+.modal.active .modal-content { transform: scale(1) translateY(0); }
+.modal-content::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255, 47, 208, 0.08), transparent 60%);
+  pointer-events: none;
+  animation: rotate 30s linear infinite;
+}
+.modal-content > * { position: relative; z-index: 2; }
+.modal-close {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: rgba(176, 38, 255, 0.1);
+  border: 1px solid var(--line);
+  color: var(--text);
+  font-size: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: 0.3s var(--ease);
+  z-index: 10;
+}
+.modal-close:hover {
+  background: var(--danger);
+  border-color: var(--danger);
+  color: #fff;
+  transform: rotate(90deg);
+}
+.modal-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: clamp(34px, 4.5vw, 48px);
+  letter-spacing: 5px;
+  text-align: center;
+  margin-bottom: 20px;
+  background: linear-gradient(90deg, var(--neon), var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.modal-sub {
+  text-align: center;
+  color: var(--muted);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  font-size: 13px;
+  margin-bottom: 60px;
+}
+
+/* ============================================================
+   16. SERVICES
+   ============================================================ */
+.services-modal-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 32px;
+}
+.service-card {
+  padding: 50px 36px;
+  background: rgba(176, 38, 255, 0.05);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  transition: 0.35s var(--ease);
+}
+.service-card:hover {
+  border-color: var(--neon-2);
+  transform: translateY(-8px);
+  box-shadow: 0 24px 60px rgba(255, 47, 208, 0.3);
+}
+.service-icon {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 46px;
+  font-weight: 900;
+  margin-bottom: 22px;
+  color: var(--neon);
+  text-shadow: 0 0 24px var(--neon);
+}
+.service-name {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 22px;
+  letter-spacing: 2.5px;
+  margin-bottom: 18px;
+  color: #fff;
+}
+.service-desc {
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.7;
+  margin-bottom: 28px;
+  flex: 1;
+}
+.service-price {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 42px;
+  font-weight: 900;
+  background: linear-gradient(90deg, var(--neon), var(--accent-2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 8px;
+}
+.service-price-label {
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin-bottom: 30px;
+}
+.service-btn {
+  display: inline-block;
+  padding: 16px 42px;
+  border-radius: 60px;
+  background: linear-gradient(90deg, var(--neon), var(--neon-2));
+  color: #fff;
+  font-size: 13px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  font-family: inherit;
+  transition: 0.3s var(--ease);
+}
+.service-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 45px rgba(255, 47, 208, 0.85);
+}
+
+/* ============================================================
+   17. RESPONSIVE
+   ============================================================ */
+@media (max-width: 1024px) {
+  :root {
+    --section-pad: 120px;
+  }
+  .section { padding: var(--section-pad) 40px; }
+  .nav { padding: 0 40px; }
+  .admin-nav { padding: 20px 40px; }
+  .modal-content { padding: 60px 40px; }
+  .subscribe-box { padding: 70px 40px; }
+}
+
+@media (max-width: 768px) {
+  :root {
+    --section-pad: 100px;
+    --nav-h: 72px;
+  }
+  .nav { padding: 0 24px; }
+  .nav-links {
+    position: fixed;
+    top: var(--nav-h);
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    background: rgba(5, 1, 13, 0.98);
+    backdrop-filter: blur(22px);
+    padding: 40px;
+    gap: 30px;
+    border-bottom: 1px solid var(--line);
+    transform: translateY(-150%);
+    transition: transform 0.4s var(--ease);
+  }
+  .nav-links.open { transform: translateY(0); }
+  .burger { display: flex; }
+  .section { padding: var(--section-pad) 24px; }
+  .hero { padding: calc(var(--nav-h) + 60px) 24px 100px; }
+  .hero-buttons { flex-direction: column; align-items: center; }
+  .hero-btn { width: 100%; max-width: 320px; text-align: center; }
+  .posts-grid { grid-template-columns: 1fr; gap: 32px; }
+  .post-body { padding: 30px 28px 34px; }
+  .subscribe-box { padding: 60px 28px; }
+  .socials { flex-direction: column; align-items: center; }
+  .social { width: 100%; max-width: 340px; text-align: center; }
+  .modal { padding: 16px; }
+  .modal-content { padding: 50px 26px; }
+  .services-modal-grid { grid-template-columns: 1fr; gap: 24px; }
+  .service-card { padding: 40px 26px; }
+  .admin-nav { padding: 18px 24px; }
+  .admin-main { padding: 40px 24px 100px; }
+  .admin-title { font-size: 28px; }
+  .admin-card { padding: 30px 24px; }
+  .admin-item { flex-direction: column; }
+  .admin-item-actions { width: 100%; }
+  .admin-item-actions button { flex: 1; }
+  .position-picker { grid-template-columns: repeat(2, 1fr); }
+  .account-tabs { flex-direction: column; }
+  .login-box { padding: 50px 32px; }
+  .no-posts { padding: 80px 24px; font-size: 15px; }
+}
+
+@media (max-width: 480px) {
+  .glitch { letter-spacing: 4px; }
+  .marquee-track span { font-size: 13px; letter-spacing: 4px; }
+  .section-title { letter-spacing: 4px; }
+}
+</style>
+</head>
+<body>
+
+<!-- PRELOADER -->
+<div id="preloader">
+  <div class="loader-logo">STAR HOUSE</div>
+  <div class="loader-bar"></div>
+</div>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <div class="nav-logo" onclick="scrollToTop()">
+    <span class="star">STAR</span><span class="house">HOUSE</span>
+  </div>
+  <ul class="nav-links" id="navLinks">
+    <li><button data-modal="services">Услуги</button></li>
+    <li><button data-scroll="posts">Публикации и новости</button></li>
+    <li><button data-scroll="subscribe">Подписка</button></li>
+  </ul>
+  <div class="burger" id="burger">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <h1 class="glitch" data-text="STAR HOUSE">STAR HOUSE</h1>
+    <p class="hero-welcome">
+      Добро пожаловать на официальный сайт <strong>STAR HOUSE</strong>.<br />
+      Здесь мы делимся новостями, фото и видео проекта.
+    </p>
+    <p class="hero-welcome">
+      Спасибо, что ты с нами. Оставляйся — впереди много интересного.
+    </p>
+    <div class="hero-signature">— Команда STAR HOUSE</div>
+
+    <div class="hero-buttons">
+      <button class="hero-btn primary" data-modal="services">Услуги</button>
+      <button class="hero-btn ghost" data-scroll="posts">Публикации и новости</button>
+    </div>
+  </div>
+</header>
+
+<!-- MARQUEE -->
+<div class="marquee">
+  <div class="marquee-track">
+    <span>STAR HOUSE ★ ДОБРО ПОЖАЛОВАТЬ ★ STAR HOUSE ★ УСЛУГИ ★ STAR HOUSE ★ ПУБЛИКАЦИИ И НОВОСТИ ★ STAR HOUSE ★ ПОДПИСКА ★</span>
+    <span>STAR HOUSE ★ ДОБРО ПОЖАЛОВАТЬ ★ STAR HOUSE ★ УСЛУГИ ★ STAR HOUSE ★ ПУБЛИКАЦИИ И НОВОСТИ ★ STAR HOUSE ★ ПОДПИСКА ★</span>
+  </div>
+</div>
+
+<!-- POSTS -->
+<section id="posts" class="section reveal">
+  <h2 class="section-title">Публикации и новости</h2>
+  <p class="section-sub">Всё самое важное о STAR HOUSE</p>
+  <div class="posts-grid" id="postsGrid"></div>
+</section>
+
+<!-- SUBSCRIBE -->
+<section id="subscribe" class="section reveal">
+  <h2 class="section-title">Подписка</h2>
+  <p class="section-sub">Будь в курсе всех новостей</p>
+  <div class="subscribe-box">
+    <h3 class="subscribe-title">Подпишитесь на наш канал</h3>
+    <p class="subscribe-text">
+      Следите за обновлениями STAR HOUSE в TikTok.<br />
+      Там мы публикуем новости первыми.
+    </p>
+    <div class="socials">
+      <a href="https://www.tiktok.com/@delichka_7?_r=1&_t=ZT-99fzYabnoKc" class="social tiktok" target="_blank" rel="noopener">TikTok</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <p>© 2026 STAR HOUSE. Все права защищены.</p>
+</footer>
+
+<!-- TO TOP -->
+<button class="to-top" id="toTop" aria-label="Наверх">↑</button>
+
+<!-- MODAL: SERVICES -->
+<div class="modal" id="modal-services">
+  <div class="modal-content">
+    <button class="modal-close" data-close>×</button>
+    <h2 class="modal-title">Услуги</h2>
+    <p class="modal-sub">Сделаем для тебя — быстро и красиво</p>
+    <div class="services-modal-grid">
+      <div class="service-card">
+        <div class="service-icon">01</div>
+        <h3 class="service-name">Аватарка</h3>
+        <p class="service-desc">Нарисуем аватарку для твоего профиля в любом стиле.</p>
+        <div class="service-price">100 ₽</div>
+        <div class="service-price-label">Фиксированная цена</div>
+        <button class="service-btn" data-order="Аватарка" data-price="100">Купить</button>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">02</div>
+        <h3 class="service-name">Обложка</h3>
+        <p class="service-desc">Сделаем обложку для канала или профиля — яркую и заметную.</p>
+        <div class="service-price">100 ₽</div>
+        <div class="service-price-label">Фиксированная цена</div>
+        <button class="service-btn" data-order="Обложка" data-price="100">Купить</button>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">03</div>
+        <h3 class="service-name">Совместное видео</h3>
+        <p class="service-desc">Снимем видео вместе с тобой или упомянем в нашем ролике.</p>
+        <div class="service-price">50 ₽</div>
+        <div class="service-price-label">Фиксированная цена</div>
+        <button class="service-btn" data-order="Совместное видео" data-price="50">Купить</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- LOGIN -->
+<div id="adminLogin">
+  <div class="login-box">
+    <div class="login-logo">
+      <span class="star">STAR</span><span class="house">HOUSE</span>
+    </div>
+    <div class="login-sub">Админ-панель</div>
+    <div class="account-tabs">
+      <button class="account-tab active" data-account="adelina">Аделина</button>
+      <button class="account-tab" data-account="esenia">Есения</button>
+      <button class="account-tab" data-account="producer">Продюсер</button>
+    </div>
+    <input type="password" id="passwordInput" class="login-input" placeholder="Пароль" />
+    <button class="login-btn" id="loginBtn">Войти</button>
+    <div class="login-error" id="loginError"></div>
+    <button class="login-back" id="loginBack">← На сайт</button>
+  </div>
+</div>
+
+<!-- ADMIN PANEL -->
+<div id="adminPanel">
+  <nav class="admin-nav">
+    <div class="admin-logo">
+      <span class="star">STAR</span><span class="house">HOUSE</span>
+    </div>
+    <div class="admin-user">Вы вошли как: <strong id="currentUser">—</strong></div>
+    <div class="admin-nav-actions">
+      <button class="admin-btn" id="backToSite">Сайт</button>
+      <button class="admin-btn danger" id="logoutBtn">Выйти</button>
+    </div>
+  </nav>
+
+  <main class="admin-main">
+    <h1 class="admin-title">Управление</h1>
+    <p class="admin-sub">Публикации, новости, медиа</p>
+
+    <div class="admin-tabs">
+      <button class="admin-tab active" data-tab="posts">Все публикации</button>
+      <button class="admin-tab" data-tab="new">Новая</button>
+      <button class="admin-tab" data-tab="export">Экспорт</button>
+    </div>
+
+    <div class="admin-tab-content active" data-content="posts">
+      <div class="admin-card">
+        <h3>Все публикации (<span id="count">0</span>)</h3>
+        <div class="admin-list" id="postsList"></div>
+      </div>
+    </div>
+
+    <div class="admin-tab-content" data-content="new">
+      <div class="admin-card">
+        <h3>Новая публикация</h3>
+        <div class="admin-field">
+          <label>Тип публикации</label>
+          <select id="postType">
+            <option value="image">Картинка</option>
+            <option value="video">Видео</option>
+            <option value="text">Только текст</option>
+          </select>
+        </div>
+        <div class="admin-field">
+          <label>Место на макете сайта</label>
+          <div class="position-picker" id="positionPicker">
+            <button type="button" class="pos-option active" data-pos="main">Главная</button>
+            <button type="button" class="pos-option" data-pos="posts">Публикации</button>
+            <button type="button" class="pos-option" data-pos="hero">Hero</button>
+            <button type="button" class="pos-option" data-pos="featured">Избранное</button>
+            <button type="button" class="pos-option" data-pos="archive">Архив</button>
+            <button type="button" class="pos-option" data-pos="bottom">Внизу</button>
+          </div>
+        </div>
+        <div class="admin-field" id="fieldImage">
+          <label>Картинка (из галереи)</label>
+          <div class="file-input-wrap" id="imageWrap">
+            <div class="file-input-display" id="imageDisplay">Нажмите, чтобы выбрать картинку</div>
+            <input type="file" id="imageInput" accept="image/*" />
+          </div>
+          <div class="media-preview" id="imagePreview" style="display:none;"></div>
+        </div>
+        <div class="admin-field" id="fieldVideo" style="display:none;">
+          <label>Видео (из галереи, до 5 МБ)</label>
+          <div class="file-input-wrap" id="videoWrap">
+            <div class="file-input-display" id="videoDisplay">Нажмите, чтобы выбрать видео</div>
+            <input type="file" id="videoInput" accept="video/*" />
+          </div>
+          <div class="media-preview" id="videoPreview" style="display:none;"></div>
+          <label style="margin-top:16px;">Или ссылка на видео</label>
+          <input type="url" id="videoUrl" placeholder="https://..." />
+        </div>
+        <div class="admin-field">
+          <label>Заголовок</label>
+          <input type="text" id="postTitle" placeholder="Заголовок публикации" />
+        </div>
+        <div class="admin-field">
+          <label>Текст</label>
+          <textarea id="postText" placeholder="Текст публикации"></textarea>
+        </div>
+        <div class="admin-field">
+          <label>Тег</label>
+          <input type="text" id="postTag" placeholder="Например: Новость" />
+        </div>
+        <button class="admin-btn primary" id="addBtn">Опубликовать</button>
+        <button class="admin-btn" id="clearBtn">Очистить</button>
+      </div>
+    </div>
+
+    <div class="admin-tab-content" data-content="export">
+      <div class="admin-card">
+        <h3>Экспорт данных</h3>
+        <p style="font-size:14px;color:var(--muted);margin-bottom:20px;line-height:1.8;">
+          Скачай файл и замени им <strong style="color:var(--accent);">content/posts.json</strong> в репозитории GitHub.<br />
+          После этого публикацию увидят все.
+        </p>
+        <button class="admin-btn primary" id="downloadBtn">Скачать posts.json</button>
+        <button class="admin-btn" id="copyBtn">Скопировать JSON</button>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<div class="admin-toast" id="toast"></div>
+
+<script>
+/* ============================================================
+   АККАУНТЫ
+   ============================================================ */
+const ACCOUNTS = {
+  adelina: {
+    name: 'Аделина',
+    role: 'Редактор',
+    passwordHash: '813032d57724a4586e3b8237a0a066f0b9bbd8ca4c4c7104f184f3dfc8bcfa82'
+  },
+  esenia: {
+    name: 'Есения',
+    role: 'Редактор',
+    passwordHash: 'ad6beccbd31ff0ecbb8cfded5e04d804fb01cd1f80fad448d18c04599f67d664'
+  },
+  producer: {
+    name: 'Продюсер',
+    role: 'Администратор',
+    passwordHash: 'cddd7317085b967b44df8ee4300b1dae879372d38252079006d1a93e5d45b8f3'
+  }
+};
+
+const ADMIN_HOTKEY = { ctrl: false, shift: true, key: 'Enter' };
+const STORAGE_KEY = 'starhouse_posts_v3';
+const SESSION_KEY = 'starhouse_session';
+const ORDER_EMAIL = 'official.starhouse@mail.ru';
+
+/* ============================================================
+   УТИЛИТЫ
+   ============================================================ */
+async function sha256(message) {
+  const msgBuffer = new TextEncoder().encode(message);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+function escapeHtml(str) {
+  return String(str || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function escapeText(str) {
+  return escapeHtml(str).replace(/\n/g, '<br />');
+}
+
+function showToast(message, isError = false) {
+  const toast = document.getElementById('toast');
+  toast.textContent = message;
+  toast.classList.toggle('error', isError);
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 2500);
+}
+
+function getPositionLabel(pos) {
+  const labels = {
+    main: 'Главная', posts: 'Публикации', hero: 'Hero',
+    featured: 'Избранное', archive: 'Архив', bottom: 'Внизу'
+  };
+  return labels[pos] || pos;
+}
+
+function getTypeLabel(type) {
+  const labels = { image: 'Картинка', video: 'Видео', text: 'Текст' };
+  return labels[type] || type;
+}
+
+/* ============================================================
+   ПРЕЛОАДЕР
+   ============================================================ */
+window.addEventListener('load', () => {
+  const preloader = document.getElementById('preloader');
+  setTimeout(() => preloader.classList.add('hidden'), 800);
+});
+
+/* ============================================================
+   БУРГЕР
+   ============================================================ */
+const burger = document.getElementById('burger');
+const navLinks = document.getElementById('navLinks');
+burger.addEventListener('click', () => {
+  burger.classList.toggle('active');
+  navLinks.classList.toggle('open');
+});
+
+document.querySelectorAll('[data-scroll]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const target = document.getElementById(btn.dataset.scroll);
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      burger.classList.remove('active');
+      navLinks.classList.remove('open');
+    }
+  });
+});
+
+/* ============================================================
+   NAV HIDE + TO TOP
+   ============================================================ */
+let lastScroll = 0;
+const nav = document.getElementById('nav');
+const toTop = document.getElementById('toTop');
+window.addEventListener('scroll', () => {
+  const current = window.pageYOffset;
+  if (current > lastScroll && current > 200) nav.classList.add('hidden');
+  else nav.classList.remove('hidden');
+  if (current > 700) toTop.classList.add('show');
+  else toTop.classList.remove('show');
+  lastScroll = current;
+});
+function scrollToTop() {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+toTop.addEventListener('click', scrollToTop);
+
+/* ============================================================
+   REVEAL
+   ============================================================ */
+const revealElements = document.querySelectorAll('.reveal');
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      revealObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.12 });
+revealElements.forEach(el => revealObserver.observe(el));
+
+/* ============================================================
+   PARALLAX HERO
+   ============================================================ */
+const heroBg = document.querySelector('.hero-bg');
+window.addEventListener('mousemove', (e) => {
+  if (!heroBg) return;
+  const x = (e.clientX / window.innerWidth - 0.5) * 24;
+  const y = (e.clientY / window.innerHeight - 0.5) * 24;
+  heroBg.style.transform = `translate(${x}px, ${y}px)`;
+});
+
+/* ============================================================
+   ЗАГРУЗКА ПУБЛИКАЦИЙ
+   ============================================================ */
+async function loadPosts() {
+  const grid = document.getElementById('postsGrid');
+  if (!grid) return;
+
+  let posts = null;
+
+  // 1. localStorage
+  const stored = localStorage.getItem(STORAGE_KEY);
+  if (stored) {
+    try {
+      const parsed = JSON.parse(stored);
+      if (Array.isArray(parsed) && parsed.length > 0) posts = parsed;
+    } catch (e) {}
+  }
+
+  // 2. content/posts.json
+  if (!posts && location.protocol !== 'file:') {
+    try {
+      const res = await fetch('content/posts.json?v=' + Date.now());
+      if (res.ok) {
+        const data = await res.json();
+        if (Array.isArray(data) && data.length > 0) {
+          posts = data;
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+        }
+      }
+    } catch (e) {}
+  }
+
+  // 3. Пока ничего нет
+  renderPostsGrid(posts || []);
+}
+
+function renderPostsGrid(posts) {
+  const grid = document.getElementById('postsGrid');
+  if (!posts || !posts.length) {
+    grid.innerHTML = `
+      <div class="no-posts">
+        Публикаций пока нет
+        <small>Загляни позже — скоро появятся новости</small>
+      </div>
+    `;
+    return;
+  }
+
+  grid.innerHTML = posts.map(item => {
+    let mediaHtml = '';
+    if (item.type === 'image' && item.image) {
+      mediaHtml = `<div class="post-media"><img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.title)}" /></div>`;
+    } else if (item.type === 'video' && item.video) {
+      if (item.video.startsWith('data:')) {
+        mediaHtml = `<div class="post-media"><video src="${escapeHtml(item.video)}" controls></video></div>`;
+      } else if (item.video.includes('youtube') || item.video.includes('youtu.be') || item.video.includes('vk.com')) {
+        mediaHtml = `<div class="post-media"><iframe src="${escapeHtml(item.video)}" frameborder="0" allowfullscreen></iframe></div>`;
+      } else {
+        mediaHtml = `<div class="post-media"><video src="${escapeHtml(item.video)}" controls></video></div>`;
+      }
+    } else {
+      mediaHtml = `<div class="post-media"><div class="post-media-placeholder">Публикация</div></div>`;
+    }
+
+    return `
+      <article class="post-card">
+        ${mediaHtml}
+        <div class="post-body">
+          <h3 class="post-title">${escapeHtml(item.title)}</h3>
+          <p class="post-text">${escapeText(item.text)}</p>
+          ${item.tag ? `<span class="post-tag">${escapeHtml(item.tag)}</span>` : ''}
+        </div>
+      </article>
+    `;
+  }).join('');
+}
+
+loadPosts();
+
+/* ============================================================
+   МОДАЛЬНЫЕ ОКНА
+   ============================================================ */
+function openModal(name) {
+  const modal = document.getElementById('modal-' + name);
+  if (!modal) return;
+  modal.classList.add('active');
+  document.body.classList.add('locked');
+}
+
+function closeModal(modal) {
+  modal.classList.remove('active');
+  document.body.classList.remove('locked');
+}
+
+document.querySelectorAll('[data-modal]').forEach(el => {
+  el.addEventListener('click', (e) => {
+    e.preventDefault();
+    openModal(el.dataset.modal);
+  });
+});
+
+document.querySelectorAll('[data-close]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const modal = btn.closest('.modal');
+    if (modal) closeModal(modal);
+  });
+});
+
+document.querySelectorAll('.modal').forEach(modal => {
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) closeModal(modal);
+  });
+});
+
+/* ============================================================
+   КУПИТЬ — MAIL.RU
+   ============================================================ */
+document.querySelectorAll('[data-order]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const service = btn.dataset.order;
+    const price = btn.dataset.price;
+
+    const subject = `Заказ: ${service} — ${price} ₽`;
+    const body = `Здравствуйте!\n\nХочу заказать: ${service}\nЦена: ${price} ₽\n\nМой ник / контакт: \n\nОпишите, что нужно: \n\nСпасибо!`;
+
+    const url = `https://e.mail.ru/compose/?to=${encodeURIComponent(ORDER_EMAIL)}&subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+    window.open(url, '_blank');
+    showToast('Открываем Mail.ru...');
+  });
+});
+
+/* ============================================================
+   АДМИНКА
+   ============================================================ */
+const adminLogin = document.getElementById('adminLogin');
+const adminPanel = document.getElementById('adminPanel');
+const passwordInput = document.getElementById('passwordInput');
+const loginBtn = document.getElementById('loginBtn');
+const loginError = document.getElementById('loginError');
+const loginBack = document.getElementById('loginBack');
+const logoutBtn = document.getElementById('logoutBtn');
+const backToSite = document.getElementById('backToSite');
+const currentUserEl = document.getElementById('currentUser');
+
+let selectedAccount = 'adelina';
+let currentUser = null;
+
+document.querySelectorAll('.account-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.account-tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    selectedAccount = tab.dataset.account;
+    loginError.textContent = '';
+    passwordInput.value = '';
+    passwordInput.focus();
+  });
+});
+
+function openLogin() {
+  adminLogin.classList.add('active');
+  passwordInput.focus();
+}
+function closeLogin() {
+  adminLogin.classList.remove('active');
+  passwordInput.value = '';
+  loginError.textContent = '';
+}
+function openAdminPanel() {
+  adminLogin.classList.remove('active');
+  adminPanel.classList.add('active');
+  document.body.style.overflow = 'hidden';
+  currentUserEl.textContent = currentUser.name + ' (' + currentUser.role + ')';
+  initAdmin();
+}
+function closeAdminPanel() {
+  adminPanel.classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown', (e) => {
+  const key = e.key.length === 1 ? e.key.toUpperCase() : e.key;
+  const targetKey = ADMIN_HOTKEY.key.length === 1
+    ? ADMIN_HOTKEY.key.toUpperCase()
+    : ADMIN_HOTKEY.key;
+  if (
+    e.ctrlKey === ADMIN_HOTKEY.ctrl &&
+    e.shiftKey === ADMIN_HOTKEY.shift &&
+    key === targetKey
+  ) {
+    e.preventDefault();
+    const sess = sessionStorage.getItem(SESSION_KEY);
+    if (sess) {
+      try {
+        const acc = JSON.parse(sess);
+        currentUser = ACCOUNTS[acc];
+        if (currentUser) { openAdminPanel(); return; }
+      } catch (err) {}
+    }
+    openLogin();
+  }
+});
+
+loginBack.addEventListener('click', closeLogin);
+backToSite.addEventListener('click', closeAdminPanel);
+
+async function tryLogin() {
+  const password = passwordInput.value.trim();
+  if (!password) { loginError.textContent = 'Введите пароль'; return; }
+  const account = ACCOUNTS[selectedAccount];
+  if (!account) { loginError.textContent = 'Аккаунт не найден'; return; }
+  const hash = await sha256(password);
+  if (hash === account.passwordHash) {
+    currentUser = account;
+    sessionStorage.setItem(SESSION_KEY, JSON.stringify(selectedAccount));
+    passwordInput.value = '';
+    loginError.textContent = '';
+    openAdminPanel();
+  } else {
+    loginError.textContent = 'Неверный пароль';
+    passwordInput.value = '';
+    passwordInput.focus();
+  }
+}
+
+loginBtn.addEventListener('click', tryLogin);
+passwordInput.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') tryLogin();
+});
+
+logoutBtn.addEventListener('click', () => {
+  sessionStorage.removeItem(SESSION_KEY);
+  currentUser = null;
+  closeAdminPanel();
+});
+
+/* ============================================================
+   ADMIN TABS
+   ============================================================ */
+document.querySelectorAll('.admin-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.admin-tab-content').forEach(c => c.classList.remove('active'));
+    tab.classList.add('active');
+    document.querySelector(`[data-content="${tab.dataset.tab}"]`).classList.add('active');
+  });
+});
+
+/* ============================================================
+   POSITION PICKER
+   ============================================================ */
+let selectedPosition = 'main';
+document.querySelectorAll('.pos-option').forEach(opt => {
+  opt.addEventListener('click', () => {
+    document.querySelectorAll('.pos-option').forEach(o => o.classList.remove('active'));
+    opt.classList.add('active');
+    selectedPosition = opt.dataset.pos;
+  });
+});
+
+/* ============================================================
+   ТИП ПОСТА
+   ============================================================ */
+const postTypeSelect = document.getElementById('postType');
+const fieldImage = document.getElementById('fieldImage');
+const fieldVideo = document.getElementById('fieldVideo');
+
+postTypeSelect.addEventListener('change', () => {
+  const type = postTypeSelect.value;
+  fieldImage.style.display = (type === 'image') ? 'block' : 'none';
+  fieldVideo.style.display = (type === 'video') ? 'block' : 'none';
+});
+
+/* ============================================================
+   ФОТО
+   ============================================================ */
+let currentImage = null;
+let currentVideo = null;
+
+const imageInput = document.getElementById('imageInput');
+const imageDisplay = document.getElementById('imageDisplay');
+const imagePreview = document.getElementById('imagePreview');
+const imageWrap = document.getElementById('imageWrap');
+
+imageInput.addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (ev) => {
+    currentImage = ev.target.result;
+    imageDisplay.textContent = 'Файл выбран: ' + file.name;
+    imageWrap.classList.add('has-file');
+    imagePreview.style.display = 'block';
+    imagePreview.innerHTML = `<img src="${currentImage}" alt="preview" />`;
+  };
+  reader.readAsDataURL(file);
+});
+
+/* ============================================================
+   ВИДЕО
+   ============================================================ */
+const videoInput = document.getElementById('videoInput');
+const videoDisplay = document.getElementById('videoDisplay');
+const videoPreview = document.getElementById('videoPreview');
+const videoWrap = document.getElementById('videoWrap');
+const videoUrl = document.getElementById('videoUrl');
+
+videoInput.addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  if (file.size > 5 * 1024 * 1024) {
+    showToast('Видео больше 5 МБ — используй ссылку', true);
+    return;
+  }
+  const reader = new FileReader();
+  reader.onload = (ev) => {
+    currentVideo = ev.target.result;
+    videoDisplay.textContent = 'Файл выбран: ' + file.name;
+    videoWrap.classList.add('has-file');
+    videoPreview.style.display = 'block';
+    videoPreview.innerHTML = `<video src="${currentVideo}" controls></video>`;
+  };
+  reader.readAsDataURL(file);
+});
+
+/* ============================================================
+   ПУБЛИКАЦИИ: СПИСОК И СОХРАНЕНИЕ
+   ============================================================ */
+let postsCache = [];
+
+function getCurrentPosts() {
+  const stored = localStorage.getItem(STORAGE_KEY);
+  if (stored) {
+    try {
+      const parsed = JSON.parse(stored);
+      if (Array.isArray(parsed)) return parsed;
+    } catch (e) {}
+  }
+  return [];
+}
+
+function savePosts(posts) {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(posts));
+    return true;
+  } catch (e) {
+    showToast('Хранилище переполнено (много картинок)', true);
+    return false;
+  }
+}
+
+function renderPostsList(posts) {
+  const list = document.getElementById('postsList');
+  const count = document.getElementById('count');
+  count.textContent = posts.length;
+
+  if (!posts.length) {
+    list.innerHTML = '<p style="color:var(--muted);text-align:center;padding:40px;font-size:15px;">Пока нет публикаций</p>';
+    return;
+  }
+
+  list.innerHTML = posts.map((item, index) => `
+    <div class="admin-item">
+      <div class="admin-item-info">
+        <div class="admin-item-header">
+          <span class="admin-item-position">${getPositionLabel(item.position)}</span>
+          <span class="admin-item-type">${getTypeLabel(item.type)}</span>
+        </div>
+        <h4>${escapeHtml(item.title || '')}</h4>
+        <p>${escapeHtml((item.text || '').slice(0, 120))}${(item.text || '').length > 120 ? '…' : ''}</p>
+      </div>
+      <div class="admin-item-actions">
+        <button class="del" data-del="${index}">Удалить</button>
+      </div>
+    </div>
+  `).join('');
+
+  list.querySelectorAll('[data-del]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = parseInt(btn.dataset.del);
+      if (confirm('Удалить эту публикацию?')) {
+        postsCache.splice(idx, 1);
+        if (savePosts(postsCache)) {
+          renderPostsList(postsCache);
+          renderPostsGrid(postsCache);
+          showToast('Публикация удалена');
+        }
+      }
+    });
+  });
+}
+
+function initAdmin() {
+  postsCache = getCurrentPosts();
+  renderPostsList(postsCache);
+}
+
+document.getElementById('addBtn').addEventListener('click', () => {
+  const type = postTypeSelect.value;
+  const title = document.getElementById('postTitle').value.trim();
+  const text = document.getElementById('postText').value.trim();
+  const tag = document.getElementById('postTag').value.trim();
+  const videoLink = videoUrl.value.trim();
+
+  if (!title && !text) {
+    showToast('Заполни заголовок или текст', true);
+    return;
+  }
+
+  const item = {
+    type,
+    position: selectedPosition,
+    title: title || '—',
+    text,
+    tag
+  };
+
+  if (type === 'image') {
+    if (!currentImage) {
+      showToast('Выбери картинку', true);
+      return;
+    }
+    item.image = currentImage;
+  }
+
+  if (type === 'video') {
+    if (videoLink) item.video = videoLink;
+    else if (currentVideo) item.video = currentVideo;
+    else {
+      showToast('Выбери видео или вставь ссылку', true);
+      return;
+    }
+  }
+
+  postsCache.push(item);
+  if (savePosts(postsCache)) {
+    renderPostsList(postsCache);
+    renderPostsGrid(postsCache);
+    clearAdminForm();
+    showToast('Публикация добавлена');
+    document.querySelector('[data-tab="posts"]').click();
+  }
+});
+
+document.getElementById('clearBtn').addEventListener('click', clearAdminForm);
+
+function clearAdminForm() {
+  document.getElementById('postTitle').value = '';
+  document.getElementById('postText').value = '';
+  document.getElementById('postTag').value = '';
+  videoUrl.value = '';
+  imageInput.value = '';
+  videoInput.value = '';
+  currentImage = null;
+  currentVideo = null;
+  imageDisplay.textContent = 'Нажмите, чтобы выбрать картинку';
+  videoDisplay.textContent = 'Нажмите, чтобы выбрать видео';
+  imageWrap.classList.remove('has-file');
+  videoWrap.classList.remove('has-file');
+  imagePreview.style.display = 'none';
+  videoPreview.style.display = 'none';
+  imagePreview.innerHTML = '';
+  videoPreview.innerHTML = '';
+  selectedPosition = 'main';
+  document.querySelectorAll('.pos-option').forEach(o => o.classList.remove('active'));
+  document.querySelector('.pos-option[data-pos="main"]').classList.add('active');
+}
+
+/* ============================================================
+   ЭКСПОРТ
+   ============================================================ */
+document.getElementById('downloadBtn').addEventListener('click', () => {
+  if (!postsCache.length) {
+    showToast('Нет публикаций', true);
+    return;
+  }
+  const json = JSON.stringify(postsCache, null, 2);
+  const blob = new Blob([json], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'posts.json';
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('Файл скачан');
+});
+
+document.getElementById('copyBtn').addEventListener('click', async () => {
+  try {
+    await navigator.clipboard.writeText(JSON.stringify(postsCache, null, 2));
+    showToast('JSON скопирован');
+  } catch (e) {
+    showToast('Не удалось скопировать', true);
+  }
+});
+
+/* ============================================================
+   ESC
+   ============================================================ */
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    document.querySelectorAll('.modal.active').forEach(m => closeModal(m));
+    if (adminLogin.classList.contains('active')) closeLogin();
+    else if (adminPanel.classList.contains('active')) closeAdminPanel();
+  }
+});
+</script>
+
+</body>
+</html>
